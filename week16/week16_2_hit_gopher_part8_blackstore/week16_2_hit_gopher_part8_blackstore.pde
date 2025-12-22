@@ -1,0 +1,43 @@
+// week16_2_hit_gopher_part8_blackstore
+// 修改自 16__hit_gopher_part7_background_image
+// 改背景圖
+PImage bg;
+
+void setup(){
+  size(300, 400);
+  bg = loadImage("grass.png"); // 圖片檔名
+}
+int score = 0;
+int [][] gopher = new int[3][3];
+void draw(){
+  //background(#9B691F);
+  background(bg);
+  for(int i=0; i<3; i++){
+    for(int j=0; j<3; j++){
+      fill(255); ellipse(100*j+50, 100*i+50, 50, 50);
+      if(gopher[i][j]>0){
+        if(gopher[i][j]<50) fill(lerpColor(#B97C20, #FFFFFF, 1-gopher[i][j]/50.0));
+        else fill(#B97C20); 
+        ellipse(100*j+50, 100*i+50, 40, 40);
+        gopher[i][j]--; // 用掉秒數
+      }
+    }
+  }
+  if(frameCount%60==0){
+    int i = int(random(3)), j = int(random(3));
+    gopher[i][j] = int(random(30))+50; // 地鼠出現的秒數
+  }
+  fill(0); 
+  textSize(30);
+  text("Score: " + score, 100, 350);
+}
+void mousePressed(){
+  for(int i=0; i<3; i++){
+    for(int j=0; j<3; j++){
+      if(gopher[i][j]>0 && dist(100*j+50, 100*i+50, mouseX, mouseY)<20){
+        gopher[i][j]=0;
+        score += 10; // 打到,加10分
+      }
+    }
+  }
+}
